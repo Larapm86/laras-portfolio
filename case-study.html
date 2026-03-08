@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Case Study — Lara Perez</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,900;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/case-study.css" />
+  </head>
+  <body class="case-study-page">
+    <nav class="case-study-back-wrap" aria-label="Case study navigation">
+      <a href="/" class="case-study-back-pill">← Go Back</a>
+      <a href="/case-study.html?project=nena-pizza" class="case-study-next-in-pill" aria-hidden="true">Next Case <span aria-hidden="true">→</span></a>
+    </nav>
+
+    <header class="case-study-header">
+      <h1 class="case-study-title" data-field="title">Restaurant Nevel</h1>
+      <p class="case-study-meta">
+        <span class="case-study-category" data-field="category">Brand & Strategy</span>
+        <span class="case-study-year" data-field="year">2023 – 2024</span>
+      </p>
+    </header>
+
+    <!-- 1. Intro → 2. Row with details → 3. First image -->
+    <p class="case-study-intro" data-field="intro">
+      Every once in a while, a project comes along that feels bigger than just work – it feels personal. Designing the visual identity for my friends at Nevel was exactly that kind of project. Our bond runs deep and our shared history became the inspiration for this work.
+    </p>
+    <dl class="case-study-details">
+      <dt>Client</dt>
+      <dd data-field="client">Restaurant Nevel</dd>
+      <dt>Website</dt>
+      <dd><a data-field="website" href="#">restaurantnevel.nl</a></dd>
+      <dt>Role</dt>
+      <dd data-field="role">Design & Strategy</dd>
+      <dt>Photography</dt>
+      <dd data-field="photography">Evita Copier</dd>
+    </dl>
+    <div class="case-study-image case-study-image--hero" aria-hidden="true"></div>
+
+    <!-- One block: sticky Concept left, images right. Then closing image + outro -->
+    <div class="case-study-sections">
+      <section class="case-study-section">
+        <div class="case-study-section-text">
+          <h2 class="case-study-section-title">Concept</h2>
+          <div class="case-study-section-body" data-field="concept">
+            <p>Nestled in the city center of ’s-Hertogenbosch, Restaurant Nevel operates with a profound connection to nature. Every dish they create celebrates local ingredients, sourced from nearby entrepreneurs and prepared with care, artistry, and respect.</p>
+            <p>The logo is rooted in the idea of growth. A blooming flower — a symbol of the restaurant at its peak. But no flower blooms without a planted seed. This journey, from seed to full bloom, mirrors the growth of the restaurant’s owners.</p>
+          </div>
+        </div>
+        <div class="case-study-section-media">
+          <div class="case-study-media-item">
+            <div class="case-study-image" aria-hidden="true"></div>
+            <p class="case-study-caption">To capture this story, we developed a short yet meaningful animation, bringing their journey to life.</p>
+          </div>
+          <div class="case-study-media-item">
+            <div class="case-study-image" aria-hidden="true"></div>
+            <p class="case-study-caption">Caption for second image.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="case-study-closing-image-wrap">
+      <div class="case-study-image case-study-image--closing" aria-hidden="true"></div>
+    </div>
+
+    <p class="case-study-outro" data-field="outro">
+      Restaurant Nevel has blossomed into something extraordinary. With its innovative concept and thoughtful execution, it has sparked a social buzz that exceeded all expectations. From seed to blossom.
+    </p>
+
+    <script type="module" src="/src/case-study.js"></script>
+  </body>
+</html>

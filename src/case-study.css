@@ -1,0 +1,388 @@
+/* Case study page — same structure as Koen Jansen (e.g. restaurant-nevel) */
+.case-study-page {
+  --color-bg: #f7f5f2;
+  --color-text: #1a1a1a;
+  --color-text-muted: #5c5c5c;
+  --color-text-soft: #8a8a8a;
+  --color-border: #e5e2de;
+  --color-accent-hover: #3d3d3d;
+  --font-serif: "Fraunces", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --page-padding-x-content: 1rem;
+  --top-bar-height: 6rem;
+  --container-max: 1200px;
+  --floating-menu-offset: 1.25rem;
+  --floating-menu-bg: rgba(45, 45, 45, 0.88);
+  --floating-menu-text: #f5f5f5;
+  --page-padding-x: 1.25rem;
+  --page-padding-x-mobile: 1rem;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+.case-study-page {
+  padding: var(--top-bar-height, 6rem) var(--page-padding-x-content, 1rem) calc(var(--space-3xl) + 3rem);
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+.case-study-header {
+  margin-bottom: var(--space-xl);
+}
+
+.case-study-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 400;
+  color: var(--color-text);
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.02em;
+}
+
+.case-study-meta {
+  font-size: 0.875rem;
+  color: var(--color-text-soft);
+  margin: 0;
+}
+
+/* Scroll-down reveal: content slides up and fades in when entering viewport */
+.case-study-page .scroll-reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+}
+.case-study-page .scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.case-study-intro {
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+  line-height: 1.5;
+  color: var(--color-text);
+  margin: 0 0 var(--space-2xl);
+}
+
+.case-study-details {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto;
+  gap: 0.35rem var(--space-xl);
+  margin: 0 0 var(--space-2xl);
+  font-size: 0.9375rem;
+}
+
+.case-study-details dt {
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin: 0;
+  grid-row: 1;
+}
+.case-study-details dt:nth-of-type(1) { grid-column: 1; }
+.case-study-details dt:nth-of-type(2) { grid-column: 2; }
+.case-study-details dt:nth-of-type(3) { grid-column: 3; }
+.case-study-details dt:nth-of-type(4) { grid-column: 4; }
+
+.case-study-details dd {
+  margin: 0;
+  color: var(--color-text);
+  font-weight: 400;
+  grid-row: 2;
+}
+.case-study-details dd:nth-of-type(1) { grid-column: 1; }
+.case-study-details dd:nth-of-type(2) { grid-column: 2; }
+.case-study-details dd:nth-of-type(3) { grid-column: 3; }
+.case-study-details dd:nth-of-type(4) { grid-column: 4; }
+
+.case-study-details a {
+  color: var(--color-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.case-study-details a:hover {
+  border-bottom-color: var(--color-text);
+}
+
+@media (max-width: 640px) {
+  .case-study-details {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto auto auto;
+  }
+  .case-study-details dt:nth-of-type(1) { grid-column: 1; grid-row: 1; }
+  .case-study-details dd:nth-of-type(1) { grid-column: 1; grid-row: 2; }
+  .case-study-details dt:nth-of-type(2) { grid-column: 2; grid-row: 1; }
+  .case-study-details dd:nth-of-type(2) { grid-column: 2; grid-row: 2; }
+  .case-study-details dt:nth-of-type(3) { grid-column: 1; grid-row: 3; }
+  .case-study-details dd:nth-of-type(3) { grid-column: 1; grid-row: 4; }
+  .case-study-details dt:nth-of-type(4) { grid-column: 2; grid-row: 3; }
+  .case-study-details dd:nth-of-type(4) { grid-column: 2; grid-row: 4; }
+
+  .case-study-back-wrap {
+    bottom: var(--space-sm);
+    left: var(--page-padding-x-mobile);
+    right: var(--page-padding-x-mobile);
+    transform: none;
+    padding: 0.6rem var(--space-md);
+  }
+}
+
+/* Go Back pill — same placement, color and constraints as main page floating menu */
+.case-study-back-wrap {
+  position: fixed;
+  bottom: var(--floating-menu-offset);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-left: var(--page-padding-x);
+  padding-right: var(--page-padding-x);
+  background-color: var(--floating-menu-bg);
+  border-radius: 9999px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+.case-study-back-wrap.has-next-visible {
+  gap: var(--space-sm);
+}
+.case-study-next-in-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  padding: 0.35em 0.65em;
+  border-radius: 0.5rem;
+  white-space: nowrap;
+  min-width: 0;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-width 0.4s ease, opacity 0.35s ease, color 0.2s ease, background-color 0.2s ease;
+}
+.case-study-back-wrap.has-next-visible .case-study-next-in-pill {
+  max-width: 10rem;
+  opacity: 1;
+}
+.case-study-next-in-pill:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.12);
+}
+/* Keep centering after load animation (animation overwrites transform so we need our own keyframes) */
+.case-study-page > .case-study-back-wrap {
+  opacity: 0;
+  transform: translate(-50%, 24px);
+}
+.case-study-page.loaded > .case-study-back-wrap {
+  animation: caseStudyRevealBack 0.6s ease-out 0.25s forwards;
+}
+@keyframes caseStudyRevealBack {
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.case-study-back-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  padding: 0.35em 0.65em;
+  border-radius: 0.5rem;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.case-study-back-pill:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Two-column layout: sticky left text, scrolling right images. Then closing image + outro */
+.case-study-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: minmax(100vh, auto);
+  gap: var(--space-3xl) var(--space-xl);
+  margin-top: var(--space-3xl);
+}
+
+.case-study-section {
+  display: contents;
+}
+.case-study-section-text {
+  position: sticky;
+  top: var(--top-bar-height);
+  align-self: start;
+  padding-right: var(--space-lg);
+  max-height: 75vh;
+  overflow-y: auto;
+}
+.case-study-section-media {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.case-study-media-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.case-study-media-item .case-study-image {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .case-study-sections {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+  .case-study-section-text {
+    position: static;
+    padding-right: 0;
+  }
+  .case-study-section-media {
+    min-height: 0;
+  }
+}
+
+.case-study-caption {
+  font-size: 0.875rem;
+  color: var(--color-text-soft);
+  margin: 0 0 var(--space-md);
+  line-height: 1.5;
+}
+
+.case-study-section-title {
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--color-text);
+  margin: 0 0 var(--space-md);
+}
+
+.case-study-section-body {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.case-study-section-body p {
+  margin: 0 0 var(--space-md);
+}
+
+.case-study-section-body p:last-child {
+  margin-bottom: 0;
+}
+
+.case-study-colors {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-md) 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.case-study-colors li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  color: var(--color-text);
+}
+
+.color-swatch {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.25rem;
+  flex-shrink: 0;
+}
+
+.case-study-link {
+  display: inline-block;
+  margin-top: var(--space-sm);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-text);
+  padding-bottom: 2px;
+}
+
+.case-study-link:hover {
+  color: var(--color-accent-hover);
+  border-bottom-color: var(--color-accent-hover);
+}
+
+.case-study-outro {
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  line-height: 1.4;
+  color: var(--color-text);
+  margin: var(--space-2xl) 0 0;
+}
+
+/* Image placeholders */
+.case-study-image {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background-color: var(--color-border);
+  border-radius: 0.5rem;
+  margin-bottom: var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-soft);
+  font-size: 0.875rem;
+  font-family: var(--font-sans);
+}
+
+.case-study-image::after {
+  content: "Image";
+}
+
+.case-study-image--hero {
+  aspect-ratio: 21 / 9;
+  margin-bottom: var(--space-3xl);
+}
+
+/* Closing image + outro: normal flow, everything scrolls (no sticky) */
+.case-study-closing-image-wrap {
+  margin-top: 8rem;
+  margin-bottom: 0;
+}
+
+.case-study-image--closing {
+  aspect-ratio: 16 / 10;
+  margin-bottom: var(--space-2xl);
+}
+

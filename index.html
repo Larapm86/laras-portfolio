@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lara Perez — Brand & Product Design</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,900;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Top bar: name, tagline, © left; socials right (outside #app so fixed works) -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+          <a href="/" class="logo">Lara Perez</a>
+          <span class="tagline">System & Product Design</span>
+          <span class="copyright">©<span data-year></span></span>
+        </div>
+        <div class="top-bar-right">
+          <a href="https://github.com" target="_blank" rel="noopener" aria-label="GitHub">
+            <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          </a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+        </div>
+    </header>
+
+    <!-- Floating menu: dark pill with Design, Play, About, Connect -->
+    <nav class="floating-menu" aria-label="Main navigation">
+      <a href="#top" data-section="design">Design</a>
+      <a href="#play" data-section="play">Play</a>
+      <a href="#about" data-section="about">About</a>
+      <a href="#connect" data-section="connect">Connect</a>
+    </nav>
+
+    <div id="app">
+      <main>
+        <section class="hero" id="top">
+          <p class="hero-text">
+            Designer based in Spain <span class="hero-sun-wrap" aria-hidden="true"><span class="hero-sun-tooltip">Tap to hola</span><svg class="hero-sun" width="56" height="56" viewBox="0 0 40 40" fill="currentColor" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="20" cy="20" r="6" fill="currentColor"/><path fill="none" stroke="currentColor" stroke-linecap="round" d="M20 2v4M20 34v4M38 20h-4M6 20H2M33.07 6.93l-2.83 2.83M9.76 30.24l-2.83 2.83M33.07 33.07l-2.83-2.83M9.76 9.76L6.93 6.93"/><path fill="none" stroke="currentColor" stroke-linecap="round" d="M20 8v2M20 30v2M32 20h-2M10 20H8M29.66 10.34l-1.41 1.41M11.72 28.28l-1.41 1.41M29.66 29.66l-1.41-1.41M11.72 11.72l-1.41-1.41"/></svg></span><br />
+            Currently working at <strong>Welltech</strong>
+          </p>
+        </section>
+
+        <section class="projects" id="design">
+          <article class="project-card">
+            <div class="project-image" aria-hidden="true"></div>
+            <div class="project-meta">
+              <span class="project-label">Restaurant Nevel</span>
+              <span class="project-year">2023 – 2024</span>
+              <span class="project-category">Brand & Strategy</span>
+            </div>
+            <p class="project-desc">
+              I developed the visual identity for Restaurant Nevel, a modern and friendly dining experience with a passion for vegetables and beer.
+            </p>
+            <a href="/case-study.html?project=restaurant-nevel" class="project-link">Case Study</a>
+          </article>
+
+          <article class="project-card">
+            <div class="project-image" aria-hidden="true"></div>
+            <div class="project-meta">
+              <span class="project-label">IKEA</span>
+              <span class="project-year">2022 – 2023</span>
+              <span class="project-category">Product Design</span>
+            </div>
+            <p class="project-desc">
+              Co-designed and maintained the AR toolset within retailer apps for IKEA worldwide, making interior design tools available for the many. Commissioned by Bakken & Bæck.
+            </p>
+            <a href="https://bakkenbaeck.com/case/studio" target="_blank" rel="noopener" class="project-link project-link--external">Case Study (external)</a>
+          </article>
+
+          <article class="project-card">
+            <div class="project-image" aria-hidden="true"></div>
+            <div class="project-meta">
+              <span class="project-label">Nena Pizza</span>
+              <span class="project-year">Ongoing</span>
+              <span class="project-category">Brand & Strategy</span>
+            </div>
+            <p class="project-desc">
+              Serving as a creative partner at Nena Pizza in Venlo, I oversee brand strategy, printed materials, web development, and communication efforts.
+            </p>
+            <a href="/case-study.html?project=nena-pizza" class="project-link">Case Study</a>
+          </article>
+
+          <article class="project-card">
+            <div class="project-image" aria-hidden="true"></div>
+            <div class="project-meta">
+              <span class="project-label">Rhyme</span>
+              <span class="project-year">Ongoing</span>
+              <span class="project-category">Side Project</span>
+            </div>
+            <p class="project-desc">
+              Rhyme is a text-editor made for musicians. It includes features like a rhyme and synonym dictionary, rhyme schemes and translations.
+            </p>
+            <a href="/case-study.html?project=rhyme" class="project-link">Case Study</a>
+          </article>
+
+          <article class="project-card">
+            <div class="project-image" aria-hidden="true"></div>
+            <div class="project-meta">
+              <span class="project-label">Awakenings</span>
+              <span class="project-year">2019 – 2020</span>
+              <span class="project-category">Product Design</span>
+            </div>
+            <p class="project-desc">
+              Developed a modular, mobile-first ticket shop for all Awakenings events, enhancing the user experience for event attendees. Commissioned by Bravoure.
+            </p>
+            <a href="/case-study.html?project=awakenings" class="project-link">Case Study</a>
+          </article>
+
+          <article class="project-card">
+            <div class="project-image" aria-hidden="true"></div>
+            <div class="project-meta">
+              <span class="project-label">Albert Heijn</span>
+              <span class="project-year">2021 – 2022</span>
+              <span class="project-category">Senior UX Designer</span>
+            </div>
+            <p class="project-desc">
+              Operating in-house as a product designer for the biggest supermarket chain in The Netherlands. Part of the Assortment And Search Team.
+            </p>
+            <a href="/case-study.html?project=albert-heijn" class="project-link">Case Study</a>
+          </article>
+        </section>
+
+        <section class="play" id="play">
+          <h2 class="section-title">Play</h2>
+          <p class="about-text">Side projects and collaborations.</p>
+          <div class="eight-ball-wrap">
+            <p class="eight-ball-prompt">Ask a yes/no question, then tap the ball or pick one below.</p>
+            <div class="eight-ball-row">
+              <div class="eight-ball-questions eight-ball-questions--left">
+                <button type="button" class="eight-ball-question">Will I have a good day?</button>
+                <button type="button" class="eight-ball-question">Should I take the job?</button>
+                <button type="button" class="eight-ball-question">Is now the right time?</button>
+                <button type="button" class="eight-ball-question">Will it work out?</button>
+              </div>
+              <div class="eight-ball-center">
+                <button type="button" class="eight-ball" id="eight-ball" aria-label="Shake Magic 8 Ball for an answer">
+                  <span class="eight-ball-inner">
+                    <span class="eight-ball-window">
+                      <span class="eight-ball-answer" id="eight-ball-answer">8</span>
+                    </span>
+                  </span>
+                </button>
+              </div>
+              <div class="eight-ball-questions eight-ball-questions--right">
+                <button type="button" class="eight-ball-question">Should I say yes?</button>
+                <button type="button" class="eight-ball-question">Is today my lucky day?</button>
+                <button type="button" class="eight-ball-question">Will they reply?</button>
+                <button type="button" class="eight-ball-question">Can I trust my gut?</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="about" id="about">
+          <h2 class="section-title">About</h2>
+          <p class="about-text">
+            I merge brand and product design into clear, user-centred digital experiences. With a focus on typography, systems, and storytelling, I work with agencies and product teams to shape identity and interface.
+          </p>
+        </section>
+
+        <section class="connect" id="connect">
+          <h2 class="section-title">Connect</h2>
+          <p class="contact-text">
+            <a href="mailto:hello@example.com">hello@example.com</a><br />
+            <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://twitter.com" target="_blank" rel="noopener">Twitter</a>
+          </p>
+        </section>
+      </main>
+
+      <footer class="site-footer" role="contentinfo">
+      </footer>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
