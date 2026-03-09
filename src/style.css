@@ -129,7 +129,7 @@ body.loaded main {
 
 .top-bar-left .logo {
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 700;
   color: var(--color-text);
   text-decoration: none;
@@ -145,7 +145,7 @@ body.loaded main {
 .top-bar-left .tagline {
   margin-top: 0.25rem;
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 400;
   color: var(--color-text-muted);
   letter-spacing: 0.02em;
@@ -154,7 +154,7 @@ body.loaded main {
 
 .top-bar-left .copyright {
   font-family: var(--font-sans);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 400;
   color: var(--color-text-soft);
   letter-spacing: 0.02em;
@@ -688,17 +688,17 @@ main {
   }
 
   .top-bar-left .logo {
-    font-size: 0.9375rem;
+    font-size: 1rem;
     font-weight: 700;
   }
 
   .top-bar-left .tagline {
-    font-size: 0.6875rem;
+    font-size: 0.8125rem;
     margin-top: 0.125rem;
   }
 
   .top-bar-left .copyright {
-    font-size: 0.625rem;
+    font-size: 0.75rem;
     margin-top: 0.125rem;
   }
 
@@ -776,9 +776,17 @@ main {
   }
 
   .hero-text {
-    font-size: clamp(1.75rem, 8vw, 2.25rem);
+    font-size: clamp(0.9375rem, 5vw, 1.25rem);
     line-height: 1.35;
     letter-spacing: -0.02em;
+    max-width: 100%;
+  }
+
+  .hero-sun-wrap .hero-sun {
+    width: 1.75em;
+    height: 1.75em;
+    min-width: 24px;
+    min-height: 24px;
   }
 
   .projects {
