@@ -238,11 +238,25 @@
   color: var(--graph-ink-faint);
 }
 
-.about-graph-wrap .graph-hint-wrap {
+.about-graph-wrap .graph-bottom-overlay {
   position: absolute;
-  bottom: var(--space-sm);
-  left: var(--space-sm);
+  bottom: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  min-height: 48px;
+  background: var(--graph-bg);
+  border-top: 1px solid var(--graph-rule);
+  pointer-events: auto;
+}
+
+.about-graph-wrap .graph-hint-wrap {
+  flex-shrink: 0;
 }
 
 .about-graph-wrap #graph-hint {
@@ -252,13 +266,10 @@
 }
 
 .about-graph-wrap .graph-controls {
-  position: absolute;
-  bottom: var(--space-sm);
-  right: var(--space-sm);
   display: flex;
   align-items: center;
   gap: 6px;
-  z-index: 100;
+  flex-shrink: 0;
 }
 
 .about-graph-wrap .graph-zoom-btn,
@@ -341,9 +352,9 @@
     right: var(--space-xs);
   }
 
-  .about-graph-wrap .graph-hint-wrap {
-    left: var(--space-xs);
-    bottom: var(--space-xs);
+  .about-graph-wrap .graph-bottom-overlay {
+    padding: var(--space-xs) var(--space-sm);
+    min-height: 44px;
   }
 
   .about-graph-wrap #graph-hint {
@@ -351,8 +362,6 @@
   }
 
   .about-graph-wrap .graph-controls {
-    right: var(--space-xs);
-    bottom: var(--space-xs);
     gap: 4px;
   }
 
