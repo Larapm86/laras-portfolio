@@ -37,6 +37,24 @@
   --page-padding-x-content: 1rem;
   --page-padding-x-mobile: 1rem;
   --page-padding-x-content-mobile: 0.75rem;
+
+  /* Motion: refined ease for load and scroll (Character-style) */
+  --ease-out-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-smooth: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* View Transitions: smooth cross-fade, no blue glitch (home ↔ case study) */
+@supports (view-transition-name: none) {
+  ::view-transition-group(root) {
+    background: #f7f5f2;
+    animation-duration: 0.45s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    background: #f7f5f2;
+    mix-blend-mode: normal;
+  }
 }
 
 *,
@@ -67,17 +85,16 @@ body {
 }
 
 /* -----------------------------------------------
-   Load animation: main fades in; cards slide up from bottom
-   (right card first, then left, per row)
+   Load & scroll animations — subtle, refined (Character-style)
    ----------------------------------------------- */
 
 main {
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(8px);
 }
 
 body.loaded main {
-  animation: loadReveal 0.6s ease-out forwards;
+  animation: loadReveal 0.8s var(--ease-out-smooth) forwards;
 }
 
 @keyframes loadReveal {
@@ -87,22 +104,24 @@ body.loaded main {
   }
 }
 
-/* Scroll reveal: content slides up and fades in when entering viewport */
+/* Scroll reveal: gentle slide-up + fade when entering viewport */
 .scroll-reveal {
   opacity: 0;
-  transform: translateY(36px);
-  transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s var(--ease-out-smooth),
+    transform 0.7s var(--ease-out-smooth);
 }
 .scroll-reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Stagger project cards slightly when they reveal */
+/* Stagger project cards for a calm cascade */
 .projects .scroll-reveal.project-card:nth-child(1) { transition-delay: 0s; }
-.projects .scroll-reveal.project-card:nth-child(2) { transition-delay: 0.06s; }
-.projects .scroll-reveal.project-card:nth-child(3) { transition-delay: 0.12s; }
-.projects .scroll-reveal.project-card:nth-child(4) { transition-delay: 0.08s; }
+.projects .scroll-reveal.project-card:nth-child(2) { transition-delay: 0.08s; }
+.projects .scroll-reveal.project-card:nth-child(3) { transition-delay: 0.16s; }
+.projects .scroll-reveal.project-card:nth-child(4) { transition-delay: 0.06s; }
 .projects .scroll-reveal.project-card:nth-child(5) { transition-delay: 0.14s; }
 .projects .scroll-reveal.project-card:nth-child(6) { transition-delay: 0.1s; }
 
@@ -191,11 +210,14 @@ body.loaded main {
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
+  view-transition-name: none;
   display: flex;
   align-items: center;
   gap: var(--space-lg);
   padding: 0.75rem var(--page-padding-x);
-  background-color: var(--floating-menu-bg);
+  background: linear-gradient(to right, rgba(38, 48, 54, 0.92), rgba(68, 65, 60, 0.88));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 9999px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
 }
@@ -207,7 +229,7 @@ body.loaded main {
   text-decoration: none;
   padding: 0.35em 0.65em;
   border-radius: 0.5rem;
-  transition: color 0.2s ease, background-color 0.2s ease;
+  transition: color 0.3s var(--ease-in-out-smooth), background-color 0.3s var(--ease-in-out-smooth);
 }
 
 .floating-menu a:hover {
@@ -233,7 +255,205 @@ main {
   text-align: left;
 }
 
-/* Hero */
+/* Graph section — Andrew Trousdale–style index */
+.graph-section {
+  position: relative;
+  padding: var(--space-2xl) 0;
+  background: var(--color-bg);
+}
+
+.graph-legend {
+  position: absolute;
+  top: var(--space-lg);
+  right: var(--page-padding-x-content);
+  width: 11rem;
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--color-border);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.graph-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.graph-legend-item:last-child {
+  border-bottom: none;
+}
+
+.graph-legend-icon {
+  flex-shrink: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.graph-legend-icon--index {
+  background: #c96;
+  border-radius: 50%;
+}
+
+.graph-legend-icon--initiatives {
+  width: 0;
+  height: 0;
+  border-left: 0.35rem solid transparent;
+  border-right: 0.35rem solid transparent;
+  border-bottom: 0.5rem solid var(--color-text);
+  background: none;
+}
+
+.graph-legend-icon--research {
+  background: transparent;
+  border: 1px solid var(--color-text);
+  border-radius: 1px;
+}
+
+.graph-legend-icon--paths {
+  background: var(--color-text);
+  border-radius: 50%;
+}
+
+.graph-wrap {
+  width: 100%;
+  max-width: 56rem;
+  margin: 0 auto;
+}
+
+.graph-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.graph-edge {
+  stroke: #4a4a4a;
+  stroke-width: 1;
+  fill: none;
+}
+
+.graph-edge--dashed {
+  stroke-dasharray: 4 3;
+}
+
+.graph-center-blob {
+  fill: #c96;
+}
+
+.graph-label {
+  fill: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  text-anchor: middle;
+}
+
+.graph-label--center {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.graph-path-node line {
+  stroke: #4a4a4a;
+  stroke-width: 1;
+}
+
+.graph-path-dot {
+  fill: none;
+  stroke: #4a4a4a;
+  stroke-width: 1.5;
+}
+
+.graph-path-num {
+  fill: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.graph-label--path {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.graph-initiative {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.graph-initiative:hover {
+  opacity: 0.75;
+}
+
+.graph-triangle {
+  fill: none;
+  stroke: var(--color-text);
+  stroke-width: 1;
+}
+
+.graph-rect {
+  fill: none;
+  stroke: var(--color-text);
+  stroke-width: 1;
+}
+
+.graph-rect--dashed {
+  stroke-dasharray: 3 2;
+}
+
+.graph-label--initiative,
+.graph-label--research {
+  font-size: 0.6875rem;
+}
+
+.graph-intro {
+  max-width: 36rem;
+  margin: var(--space-xl) auto 0;
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  text-align: center;
+}
+
+.graph-intro strong {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.graph-link:focus {
+  outline: none;
+}
+
+.graph-link:focus .graph-triangle {
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 0 2px var(--color-bg-elevated));
+}
+
+@media (max-width: 640px) {
+  .graph-legend {
+    position: static;
+    width: auto;
+    max-width: 16rem;
+    margin: 0 auto var(--space-md);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1rem;
+    justify-content: center;
+  }
+  .graph-legend-item {
+    border-bottom: none;
+    padding: 0.2rem 0;
+  }
+}
+
+/* Hero (legacy / case study) */
 .hero {
   padding: var(--space-3xl) 0;
   text-align: left;
@@ -249,6 +469,23 @@ main {
   letter-spacing: -0.01em;
   text-align: left;
 }
+
+/* Aulis-style line reveal: each line slides up into place with stagger */
+.text-reveal-line {
+  display: block;
+  overflow: hidden;
+  line-height: 1.22;
+}
+.text-reveal-inner {
+  display: inline-block;
+  transform: translateY(100%);
+  transition: transform 0.7s var(--ease-out-smooth);
+}
+body.loaded .text-reveal-inner {
+  transform: translateY(0);
+}
+.hero-text .text-reveal-line:nth-child(1) .text-reveal-inner { transition-delay: 0.05s; }
+.hero-text .text-reveal-line:nth-child(2) .text-reveal-inner { transition-delay: 0.2s; }
 
 .hero-text strong {
   font-weight: 900;
@@ -338,7 +575,7 @@ main {
 .project-card {
   padding: 0;
   border-bottom: none;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.35s var(--ease-in-out-smooth);
   text-align: left;
 }
 
@@ -421,7 +658,7 @@ main {
   color: var(--color-text);
   text-decoration: none;
   letter-spacing: 0.02em;
-  transition: color 0.2s ease;
+  transition: color 0.3s var(--ease-in-out-smooth);
 }
 
 .project-link::after {
@@ -600,15 +837,12 @@ main {
   display: block;
 }
 .eight-ball-answer.eight-ball-answer--reveal {
-  animation: eight-ball-answer-reveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: eight-ball-answer-reveal 0.55s var(--ease-out-smooth) forwards;
 }
 @keyframes eight-ball-answer-reveal {
   0% {
     opacity: 0;
-    transform: scale(0.7);
-  }
-  70% {
-    transform: scale(1.05);
+    transform: scale(0.92);
   }
   100% {
     opacity: 1;

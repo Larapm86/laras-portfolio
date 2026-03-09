@@ -4,6 +4,17 @@ const project = params.get('project') || 'restaurant-nevel'
 
 document.title = `${project.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} — Case Study | Lara Perez`
 
+// Smooth back: use View Transitions API when going back to home (if supported)
+const goBackLink = document.querySelector('.case-study-back-pill[href="/"]')
+if (goBackLink && document.startViewTransition) {
+  goBackLink.addEventListener('click', (e) => {
+    e.preventDefault()
+    document.startViewTransition(() => {
+      window.location.href = '/'
+    })
+  })
+}
+
 // Trigger load animation
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => document.body.classList.add('loaded'))

@@ -10,6 +10,42 @@ function initLoadAnimation() {
 }
 initLoadAnimation()
 
+// Aulis-style text reveal: split hero into lines and wrap for line-by-line slide-up
+function initHeroTextReveal() {
+  const heroText = document.querySelector('.hero-text')
+  if (!heroText) return
+  const html = heroText.innerHTML
+  const parts = html.split(/<br\s*\/?>/i).map((s) => s.trim()).filter(Boolean)
+  if (parts.length < 2) return
+  heroText.innerHTML = parts
+    .map(
+      (part) =>
+        `<span class="text-reveal-line"><span class="text-reveal-inner">${part}</span></span>`
+    )
+    .join('')
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initHeroTextReveal)
+} else {
+  initHeroTextReveal()
+}
+
+// Smooth open: use View Transitions API when navigating to a case study (if supported)
+function bindCaseStudyTransition(link) {
+  link.addEventListener('click', (e) => {
+    const href = link.getAttribute('href')
+    if (!href || link.target === '_blank') return
+    if (document.startViewTransition) {
+      e.preventDefault()
+      document.startViewTransition(() => {
+        window.location.href = href
+      })
+    }
+  })
+}
+document.querySelectorAll('a.project-link[href*="case-study.html"]').forEach(bindCaseStudyTransition)
+document.querySelectorAll('a.graph-link[href*="case-study.html"]').forEach(bindCaseStudyTransition)
+
 // Copyright year in top bar
 const yearEl = document.querySelector('[data-year]')
 if (yearEl) yearEl.textContent = new Date().getFullYear()
@@ -34,10 +70,10 @@ function setActiveLink() {
   }
   const scrollY = window.scrollY + 100
   let current = null
-  const designSection = document.getElementById('design')
-  const inHero = designSection && scrollY < designSection.offsetTop - 80
+  const topSection = document.getElementById('top')
+  const inTop = topSection && scrollY < topSection.offsetTop + topSection.offsetHeight - 80
 
-  if (inHero) {
+  if (inTop) {
     current = 'design'
   } else {
     sections.forEach((section) => {

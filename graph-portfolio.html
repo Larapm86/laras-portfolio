@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lara Perez</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f0ede8;
+    --ink: #1a1814;
+    --ink-soft: #6b6560;
+    --ink-faint: #aaa49e;
+    --rule: #d0cbc4;
+    --accent: #d04e28;
+    --node-bg: #f0ede8;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink);
+    cursor: default;
+    user-select: none;
+  }
+
+  /* ── CANVAS ── */
+  #canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--ink);
+  }
+
+  .logo sub {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-style: normal;
+    color: var(--ink-faint);
+    vertical-align: baseline;
+    margin-left: 6px;
+  }
+
+  header nav {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  header nav a {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  header nav a:hover { color: var(--ink); }
+
+  header nav a.cta {
+    border: 1px solid var(--rule);
+    padding: 4px 10px;
+    color: var(--ink);
+  }
+
+  header nav a.cta:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ── LEGEND ── */
+  #legend {
+    position: fixed;
+    top: 80px;
+    right: 28px;
+    width: 220px;
+    background: rgba(240,237,232,0.92);
+    border: 1px solid var(--rule);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+  }
+
+  .legend-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px dashed var(--rule);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+
+  .legend-row:last-child { border-bottom: none; }
+
+  .legend-row:hover { background: rgba(208,78,40,0.05); }
+
+  .legend-row.active .legend-label { color: var(--accent); }
+
+  .legend-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .legend-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+  }
+
+  .legend-plus {
+    font-size: 14px;
+    color: var(--ink-faint);
+    line-height: 1;
+  }
+
+  /* ── NODE LABELS ── */
+  .node-label {
+    position: absolute;
+    pointer-events: none;
+    transform: translate(-50%, 0);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .node-label .title {
+    font-size: 11px;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    display: block;
+    line-height: 1.4;
+  }
+
+  .node-label .subtitle {
+    font-family: var(--serif);
+    font-size: 11px;
+    font-style: italic;
+    color: var(--ink-soft);
+    display: block;
+  }
+
+  .node-label .meta {
+    font-size: 9.5px;
+    color: var(--ink-faint);
+    display: block;
+  }
+
+  /* ── TOOLTIP / PANEL ── */
+  #panel {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 460px;
+    width: calc(100% - 64px);
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    padding: 24px 28px;
+    z-index: 200;
+    display: none;
+    animation: panelIn 0.2s ease;
+  }
+
+  @keyframes panelIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+
+  #panel.visible { display: block; }
+
+  #panel-close {
+    position: absolute;
+    top: 10px; right: 14px;
+    font-size: 10px;
+    color: var(--ink-faint);
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    background: none;
+    border: none;
+  }
+
+  #panel-close:hover { color: var(--ink); }
+
+  #panel-eyebrow {
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  #panel-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+
+  #panel-body {
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    white-space: pre-line;
+  }
+
+  #panel-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .ptag {
+    font-size: 9px;
+    letter-spacing: 0.07em;
+    border: 1px solid var(--rule);
+    padding: 2px 7px;
+    color: var(--ink-faint);
+  }
+
+  /* ── HINT ── */
+  #hint {
+    position: fixed;
+    bottom: 28px;
+    left: 28px;
+    font-size: 9.5px;
+    letter-spacing: 0.07em;
+    color: var(--ink-faint);
+    z-index: 100;
+  }
+
+  /* ── CENTER LABEL ── */
+  #center-label {
+    position: fixed;
+    pointer-events: none;
+    z-index: 50;
+    text-align: center;
+    transform: translate(-50%, -50%);
+  }
+
+  #center-label .name {
+    font-family: var(--serif);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--ink);
+    display: block;
+  }
+
+  #center-label .byline {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    display: block;
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">Lara Perez <sub>Product Designer</sub></span>
+  <nav>
+    <a href="#">Index</a>
+    <a href="mailto:lperezmolines@gmail.com" class="cta">Say hola →</a>
+  </nav>
+</header>
+
+<!-- Legend -->
+<div id="legend">
+  <div class="legend-row active" data-cat="all">
+    <div class="legend-left">
+      <svg width="13" height="13" viewBox="0 0 13 13"><circle cx="6.5" cy="6.5" r="5.5" fill="var(--accent)"/></svg>
+      <span class="legend-label">INDEX</span>
+    </div>
+    <span class="legend-plus">+</span>
+  </div>
+  <div class="legend-row" data-cat="work">
+    <div class="legend-left">
+      <svg width="13" height="13" viewBox="0 0 13 13"><polygon points="6.5,1 12,12 1,12" fill="none" stroke="var(--ink)" stroke-width="1.2"/></svg>
+      <span class="legend-label">WORK</span>
+    </div>
+    <span class="legend-plus">+</span>
+  </div>
+  <div class="legend-row" data-cat="discipline">
+    <div class="legend-left">
+      <svg width="13" height="13" viewBox="0 0 13 13"><rect x="1" y="1" width="11" height="11" fill="none" stroke="var(--ink)" stroke-width="1.2"/></svg>
+      <span class="legend-label">DISCIPLINES</span>
+    </div>
+    <span class="legend-plus">+</span>
+  </div>
+  <div class="legend-row" data-cat="area">
+    <div class="legend-left">
+      <svg width="13" height="13" viewBox="0 0 13 13"><circle cx="6.5" cy="6.5" r="5.5" fill="none" stroke="var(--ink)" stroke-width="1.2"/></svg>
+      <span class="legend-label">AREAS</span>
+    </div>
+    <span class="legend-plus">+</span>
+  </div>
+  <div class="legend-row" data-cat="about">
+    <div class="legend-left">
+      <svg width="13" height="13" viewBox="0 0 13 13"><circle cx="6.5" cy="6.5" r="5.5" fill="var(--ink)"/></svg>
+      <span class="legend-label">ABOUT</span>
+    </div>
+    <span class="legend-plus">+</span>
+  </div>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<!-- Center label -->
+<div id="center-label">
+  <span class="name">Lara Perez</span>
+  <span class="byline">Designer</span>
+</div>
+
+<!-- Info panel -->
+<div id="panel">
+  <button type="button" id="panel-close">[ close ]</button>
+  <p id="panel-eyebrow"></p>
+  <h3 id="panel-title"></h3>
+  <div id="panel-body"></div>
+  <div id="panel-tags"></div>
+</div>
+
+<div id="hint">drag to pan · scroll to zoom · click nodes to explore</div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const centerLabel = document.getElementById('center-label');
+
+// ── DATA ──────────────────────────────────────────────────────────────
+const nodes = [
+  // CENTER
+  {
+    id: 'lara', label: 'Lara Perez', sub: 'Designer', cat: 'center',
+    shape: 'starburst', color: '#d04e28', r: 14,
+    data: { eyebrow: 'Product Designer · Remote, Spain', title: 'Lara Perez', body: 'Designer specialized in turning messy problems into thoughtful, human-centered solutions that people — and businesses — actually love.', tags: [] }
+  },
+
+  // ABOUT nodes
+  {
+    id: 'info', label: 'Information', sub: '', cat: 'about',
+    shape: 'circle-fill', color: '#1a1814', r: 8,
+    data: { eyebrow: 'About', title: 'Information', body: 'Based in Spain, working remotely across Europe. I combine behavioral psychology with strong visual craft to create products that feel effortless. Available for freelance and full-time opportunities.', tags: ['Remote', 'Spain', 'Open to work'] }
+  },
+  {
+    id: 'contact', label: 'Contact', sub: 'lperezmolines@gmail.com', cat: 'about',
+    shape: 'circle-fill', color: '#1a1814', r: 7,
+    data: { eyebrow: 'Contact', title: 'Say Hola', body: 'lperezmolines@gmail.com\n\nLinkedIn: linkedin.com/in/larapmolines\nGithub: github.com/Larapm86', tags: [] }
+  },
+
+  // AREAS (hexagon-ish = circle outline)
+  {
+    id: 'behavioral', label: 'Behavioral\nDesign', sub: 'Area of Practice', cat: 'area',
+    shape: 'hexagon', color: '#1a1814', r: 10,
+    data: { eyebrow: 'Area of Practice', title: 'Behavioral Design', body: 'Applying psychology principles — habit loops, motivation theory, nudge design — to create products that change behavior sustainably.', tags: ['Psychology', 'Habits', 'Persuasion'] }
+  },
+  {
+    id: 'growth', label: 'Growth\nDesign', sub: 'Area of Practice', cat: 'area',
+    shape: 'hexagon', color: '#1a1814', r: 10,
+    data: { eyebrow: 'Area of Practice', title: 'Growth Design', body: 'Designing for acquisition, activation, retention, and revenue. Bridging design thinking with data-driven growth methodology.', tags: ['Funnels', 'Retention', 'Conversion'] }
+  },
+  {
+    id: 'systems', label: 'Systems\nThinking', sub: 'Area of Research', cat: 'area',
+    shape: 'hexagon', color: '#1a1814', r: 10,
+    data: { eyebrow: 'Area of Research', title: 'Systems Thinking', body: 'Mapping causal loops and leverage points to understand complex product and organizational problems before reaching for solutions.', tags: ['Causal Loops', 'Strategy', 'Org Design'] }
+  },
+
+  // DISCIPLINES (squares)
+  {
+    id: 'ux', label: 'UX Research', sub: 'Discipline', cat: 'discipline',
+    shape: 'square', color: '#1a1814', r: 8,
+    data: { eyebrow: 'Discipline', title: 'UX Research', body: 'Qualitative and quantitative research: user interviews, diary studies, usability testing, and survey design to ground design decisions in real user needs.', tags: [] }
+  },
+  {
+    id: 'strategy', label: 'Product\nStrategy', sub: 'Discipline', cat: 'discipline',
+    shape: 'square', color: '#1a1814', r: 8,
+    data: { eyebrow: 'Discipline', title: 'Product Strategy', body: 'Shaping product direction, prioritization frameworks, and roadmaps. Working alongside founders and PMs to align design with business outcomes.', tags: [] }
+  },
+  {
+    id: 'ops', label: 'Design Ops', sub: 'Discipline', cat: 'discipline',
+    shape: 'square', color: '#1a1814', r: 8,
+    data: { eyebrow: 'Discipline', title: 'Design Operations', body: 'Building the systems, processes, and culture that let design teams work at their best — from design systems governance to critique culture.', tags: [] }
+  },
+
+  // WORK (triangles)
+  {
+    id: 'habit', label: 'Habit Loops', sub: 'Gamification · Habit Formation', cat: 'work', year: '2024',
+    shape: 'triangle', color: '#1a1814', r: 9,
+    data: { eyebrow: 'Work · 2024', title: 'Designing meaningful habit loops', body: 'Designing gamification systems that build genuine intrinsic motivation rather than short-lived streaks. Led end-to-end design from discovery to launch. 40% improvement in 30-day retention.', tags: ['Gamification', 'Habit Formation'] }
+  },
+  {
+    id: 'drink', label: '0→1 Product', sub: 'Mindful Drinking', cat: 'work', year: '2024',
+    shape: 'triangle', color: '#1a1814', r: 9,
+    data: { eyebrow: 'Work · 2024', title: 'Building a 0→1 product for mindful drinking habits', body: 'Led design from blank canvas to public launch in 6 months. Shaped product vision alongside the founding team. The onboarding alone went through 14 iterations.', tags: ['Product Launch', 'Design Leadership'] }
+  },
+  {
+    id: 'maturity', label: 'UX Maturity', sub: 'Design Operations', cat: 'work', year: '2024',
+    shape: 'triangle', color: '#1a1814', r: 9,
+    data: { eyebrow: 'Work · 2024', title: 'Improving UX maturity at scale', body: 'Audited and transformed design practice across 4 product squads. Design cycle time decreased 30%, cross-functional satisfaction significantly improved.', tags: ['UX Strategy', 'Design Ops'] }
+  },
+  {
+    id: 'systemic', label: 'Systemic\nProblems', sub: 'System Thinking · Growth', cat: 'work', year: '2024',
+    shape: 'triangle', color: '#1a1814', r: 9,
+    data: { eyebrow: 'Work · 2024', title: 'Mapping growth systemic problems', body: 'Applied causal loop diagrams to uncover non-obvious leverage points in a SaaS growth plateau. One insight reduced support tickets 22% and improved activation 18%.', tags: ['System Thinking', 'Growth'] }
+  },
+  {
+    id: 'onboarding', label: 'Onboarding\nFunnels', sub: 'Behavioral · Conversion', cat: 'work', year: '2023',
+    shape: 'triangle', color: '#1a1814', r: 9,
+    data: { eyebrow: 'Work · 2023', title: 'Accelerating time-to-value in onboarding funnels', body: 'Redesigned onboarding funnel applying JTBD research and behavioral design. Reduced time-to-activation by 35%. Template later rolled out across two other product lines.', tags: ['Behavioral Design', 'Conversion'] }
+  },
+  {
+    id: 'retention', label: 'Premium\nRetention', sub: 'Behavioral · Retention', cat: 'work', year: '2023',
+    shape: 'triangle', color: '#1a1814', r: 9,
+    data: { eyebrow: 'Work · 2023', title: 'Enhancing user journey for premium retention', body: 'Mapped full premium user journey and identified critical "post-purchase anxiety" window. Designing for this window alone contributed to a 12-point improvement in 90-day retention.', tags: ['Behavioral Design', 'Retention'] }
+  },
+];
+
+// ── EDGES ─────────────────────────────────────────────────────────────
+const edges = [
+  { from: 'lara', to: 'info', dash: false },
+  { from: 'lara', to: 'contact', dash: true },
+  { from: 'lara', to: 'behavioral', dash: false },
+  { from: 'lara', to: 'growth', dash: false },
+  { from: 'lara', to: 'systems', dash: true },
+  { from: 'lara', to: 'ux', dash: false },
+  { from: 'lara', to: 'strategy', dash: false },
+  { from: 'lara', to: 'ops', dash: true },
+  { from: 'behavioral', to: 'habit', dash: false },
+  { from: 'behavioral', to: 'onboarding', dash: true },
+  { from: 'behavioral', to: 'retention', dash: true },
+  { from: 'growth', to: 'systemic', dash: false },
+  { from: 'growth', to: 'onboarding', dash: false },
+  { from: 'growth', to: 'drink', dash: true },
+  { from: 'systems', to: 'systemic', dash: false },
+  { from: 'ops', to: 'maturity', dash: false },
+  { from: 'strategy', to: 'drink', dash: false },
+  { from: 'ux', to: 'habit', dash: true },
+  { from: 'ux', to: 'retention', dash: false },
+];
+
+// ── LAYOUT ────────────────────────────────────────────────────────────
+const layout = {
+  lara:       { x: 0.45, y: 0.46 },
+  info:       { x: 0.45, y: 0.22 },
+  contact:    { x: 0.62, y: 0.18 },
+  behavioral: { x: 0.22, y: 0.34 },
+  growth:     { x: 0.65, y: 0.30 },
+  systems:    { x: 0.58, y: 0.62 },
+  ux:         { x: 0.28, y: 0.56 },
+  strategy:   { x: 0.62, y: 0.50 },
+  ops:        { x: 0.38, y: 0.72 },
+  habit:      { x: 0.10, y: 0.28 },
+  drink:      { x: 0.74, y: 0.22 },
+  maturity:   { x: 0.32, y: 0.80 },
+  systemic:   { x: 0.72, y: 0.62 },
+  onboarding: { x: 0.12, y: 0.52 },
+  retention:  { x: 0.15, y: 0.68 },
+};
+
+// ── VIEWPORT STATE ──────────────────────────────────────────────────────
+let vp = { x: 0, y: 0, scale: 1 };
+let isDragging = false, dragStart = { x: 0, y: 0 }, vpStart = { x: 0, y: 0 };
+let hoveredNode = null;
+let W, H;
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  draw();
+  updateCenterLabel();
+}
+
+function worldPos(node) {
+  const base = layout[node.id];
+  return {
+    x: base.x * W * vp.scale + vp.x,
+    y: (base.y * H - 48) * vp.scale + vp.y + 48
+  };
+}
+
+// ── DRAW SHAPES ───────────────────────────────────────────────────────
+function drawShape(shape, x, y, r, color, hovered) {
+  ctx.beginPath();
+  const alpha = hovered ? 1 : 0.9;
+
+  if (shape === 'starburst') {
+    const spikes = 8, outerR = r, innerR = r * 0.55;
+    for (let i = 0; i < spikes * 2; i++) {
+      const angle = (i * Math.PI / spikes) - Math.PI / 2;
+      const rad = i % 2 === 0 ? outerR : innerR;
+      const px = x + Math.cos(angle) * rad;
+      const py = y + Math.sin(angle) * rad;
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+    if (hovered) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke(); }
+    return;
+  }
+
+  if (shape === 'triangle') {
+    const h = r * 1.6;
+    ctx.moveTo(x, y - h * 0.65);
+    ctx.lineTo(x + r, y + h * 0.35);
+    ctx.lineTo(x - r, y + h * 0.35);
+    ctx.closePath();
+  } else if (shape === 'square') {
+    ctx.rect(x - r, y - r, r * 2, r * 2);
+  } else if (shape === 'hexagon') {
+    for (let i = 0; i < 6; i++) {
+      const a = (i * Math.PI) / 3 - Math.PI / 6;
+      const px = x + Math.cos(a) * r;
+      const py = y + Math.sin(a) * r;
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+  } else if (shape === 'circle-fill') {
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+  } else {
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+  }
+
+  if (shape === 'hexagon') {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = hovered ? 1.8 : 1.2;
+    ctx.stroke();
+    if (hovered) { ctx.fillStyle = 'rgba(26,24,20,0.06)'; ctx.fill(); }
+  } else if (shape === 'circle-fill') {
+    ctx.fillStyle = color;
+    ctx.fill();
+    if (hovered) { ctx.strokeStyle = 'rgba(255,255,255,0.4)'; ctx.lineWidth = 1.5; ctx.stroke(); }
+  } else {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = hovered ? 1.8 : 1.1;
+    ctx.stroke();
+    if (hovered) { ctx.fillStyle = 'rgba(26,24,20,0.06)'; ctx.fill(); }
+  }
+}
+
+function getNodePos(id) {
+  const n = nodes.find(n => n.id === id);
+  return n ? worldPos(n) : null;
+}
+
+// ── DRAW ──────────────────────────────────────────────────────────────
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  edges.forEach(e => {
+    const a = getNodePos(e.from), b = getNodePos(e.to);
+    if (!a || !b) return;
+
+    ctx.beginPath();
+    const mx = (a.x + b.x) / 2 + (b.y - a.y) * 0.04;
+    const my = (a.y + b.y) / 2 - (b.x - a.x) * 0.04;
+    ctx.moveTo(a.x, a.y);
+    ctx.quadraticCurveTo(mx, my, b.x, b.y);
+
+    if (e.dash) ctx.setLineDash([3, 5]);
+    else ctx.setLineDash([]);
+
+    const isHighlighted = hoveredNode && (e.from === hoveredNode.id || e.to === hoveredNode.id);
+    ctx.strokeStyle = isHighlighted ? 'rgba(26,24,20,0.45)' : 'rgba(26,24,20,0.15)';
+    ctx.lineWidth = isHighlighted ? 1.2 : 0.8;
+    ctx.stroke();
+    ctx.setLineDash([]);
+  });
+
+  nodes.forEach(n => {
+    const pos = worldPos(n);
+    const hovered = hoveredNode && hoveredNode.id === n.id;
+    drawShape(n.shape, pos.x, pos.y, n.r * (hovered ? 1.25 : 1), n.color, hovered);
+  });
+
+  ctx.save();
+  nodes.forEach(n => {
+    const pos = worldPos(n);
+    const hovered = hoveredNode && hoveredNode.id === n.id;
+    const lines = n.label.split('\n');
+    const offsetY = n.r * (hovered ? 1.3 : 1.1) + 5;
+
+    ctx.textAlign = 'center';
+    ctx.fillStyle = hovered ? '#1a1814' : '#3a3530';
+    ctx.font = `${hovered ? 400 : 300} ${11}px 'DM Mono', monospace`;
+    lines.forEach((line, i) => {
+      ctx.fillText(line, pos.x, pos.y + offsetY + i * 14);
+    });
+
+    if (n.sub && n.id !== 'lara') {
+      ctx.font = `italic 300 10px 'Cormorant Garamond', serif`;
+      ctx.fillStyle = '#9a948e';
+      ctx.fillText(n.sub.split('\n')[0], pos.x, pos.y + offsetY + lines.length * 14 + 2);
+    }
+
+    if (n.year) {
+      ctx.font = `300 9px 'DM Mono', monospace`;
+      ctx.fillStyle = '#aaa49e';
+      ctx.fillText(n.year, pos.x, pos.y - n.r * 1.4);
+    }
+  });
+  ctx.restore();
+}
+
+function updateCenterLabel() {
+  const pos = getNodePos('lara');
+  if (!pos) return;
+  centerLabel.style.left = pos.x + 'px';
+  centerLabel.style.top  = (pos.y + 26) + 'px';
+}
+
+function hitTest(mx, my) {
+  for (let i = nodes.length - 1; i >= 0; i--) {
+    const n = nodes[i];
+    const pos = worldPos(n);
+    const dx = mx - pos.x, dy = my - pos.y;
+    if (Math.sqrt(dx*dx + dy*dy) < n.r * 2.2) return n;
+  }
+  return null;
+}
+
+function showPanel(n) {
+  const d = n.data;
+  document.getElementById('panel-eyebrow').textContent = d.eyebrow;
+  document.getElementById('panel-title').textContent = d.title;
+  document.getElementById('panel-body').textContent = d.body;
+  document.getElementById('panel-tags').innerHTML = (d.tags || []).map(t => `<span class="ptag">${t}</span>`).join('');
+  document.getElementById('panel').classList.add('visible');
+}
+
+document.getElementById('panel-close').addEventListener('click', () => {
+  document.getElementById('panel').classList.remove('visible');
+});
+
+// ── INTERACTIONS ──────────────────────────────────────────────────────
+canvas.addEventListener('mousedown', e => {
+  const hit = hitTest(e.clientX, e.clientY);
+  if (!hit) {
+    isDragging = true;
+    dragStart = { x: e.clientX, y: e.clientY };
+    vpStart = { ...vp };
+    canvas.style.cursor = 'grabbing';
+  }
+});
+
+canvas.addEventListener('mousemove', e => {
+  if (isDragging) {
+    vp.x = vpStart.x + (e.clientX - dragStart.x);
+    vp.y = vpStart.y + (e.clientY - dragStart.y);
+    draw(); updateCenterLabel();
+    return;
+  }
+  const hit = hitTest(e.clientX, e.clientY);
+  if (hit !== hoveredNode) {
+    hoveredNode = hit;
+    canvas.style.cursor = hit ? 'pointer' : 'default';
+    draw(); updateCenterLabel();
+  }
+});
+
+canvas.addEventListener('mouseup', () => {
+  if (isDragging) {
+    isDragging = false;
+    canvas.style.cursor = 'default';
+  }
+});
+
+canvas.addEventListener('click', e => {
+  const hit = hitTest(e.clientX, e.clientY);
+  if (hit) showPanel(hit);
+});
+
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  const factor = e.deltaY > 0 ? 0.92 : 1.09;
+  const mx = e.clientX, my = e.clientY;
+  vp.x = mx - (mx - vp.x) * factor;
+  vp.y = my - (my - vp.y) * factor;
+  vp.scale *= factor;
+  vp.scale = Math.max(0.4, Math.min(2.5, vp.scale));
+  draw(); updateCenterLabel();
+}, { passive: false });
+
+let lastTouch = null;
+canvas.addEventListener('touchstart', e => {
+  lastTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  vpStart = { ...vp };
+  dragStart = { ...lastTouch };
+}, { passive: true });
+
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  const t = e.touches[0];
+  vp.x = vpStart.x + (t.clientX - dragStart.x);
+  vp.y = vpStart.y + (t.clientY - dragStart.y);
+  draw(); updateCenterLabel();
+}, { passive: false });
+
+canvas.addEventListener('touchend', e => {
+  const t = e.changedTouches[0];
+  if (t && Math.abs(t.clientX - dragStart.x) + Math.abs(t.clientY - dragStart.y) < 6) {
+    const hit = hitTest(t.clientX, t.clientY);
+    if (hit) showPanel(hit);
+  }
+});
+
+document.querySelectorAll('.legend-row').forEach(row => {
+  row.addEventListener('click', () => {
+    document.querySelectorAll('.legend-row').forEach(r => r.classList.remove('active'));
+    row.classList.add('active');
+  });
+});
+
+window.addEventListener('resize', resize);
+resize();
+
+let animFrame;
+function idleDrift() {
+  draw();
+  updateCenterLabel();
+  animFrame = requestAnimationFrame(idleDrift);
+}
+idleDrift();
+</script>
+</body>
+</html>
