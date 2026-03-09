@@ -82,7 +82,7 @@
   width: 200px;
   max-height: calc(100% - 80px);
   overflow-y: auto;
-  background: rgba(247, 245, 242, 0.94);
+  background: rgba(252, 252, 252, 0.94);
   border: 1px solid var(--graph-rule);
   border-radius: 8px;
   backdrop-filter: blur(8px);
@@ -148,16 +148,18 @@
 
 .about-graph-wrap #graph-panel {
   position: absolute;
-  bottom: var(--space-sm);
+  bottom: 56px;
   left: 50%;
   transform: translateX(-50%);
   max-width: 90%;
   width: 340px;
+  max-height: calc(100% - 120px);
+  overflow-y: auto;
   background: var(--graph-bg);
   border: 1px solid var(--graph-rule);
   border-radius: 8px;
   padding: 16px 20px;
-  z-index: 200;
+  z-index: 110;
   display: none;
   animation: graph-panelIn 0.2s ease;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);

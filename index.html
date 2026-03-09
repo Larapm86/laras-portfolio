@@ -128,14 +128,8 @@
           <h2 class="section-title">Play</h2>
           <p class="about-text">Side projects and collaborations.</p>
           <div class="eight-ball-wrap">
-            <p class="eight-ball-prompt">Ask a yes/no question, then tap the ball or pick one below.</p>
+            <p class="eight-ball-prompt">Tap the question below, choose a new one and wait for your answer.</p>
             <div class="eight-ball-row">
-              <div class="eight-ball-questions eight-ball-questions--left">
-                <button type="button" class="eight-ball-question">Will I have a good day?</button>
-                <button type="button" class="eight-ball-question">Should I take the job?</button>
-                <button type="button" class="eight-ball-question">Is now the right time?</button>
-                <button type="button" class="eight-ball-question">Will it work out?</button>
-              </div>
               <div class="eight-ball-center">
                 <button type="button" class="eight-ball" id="eight-ball" aria-label="Shake Magic 8 Ball for an answer">
                   <span class="eight-ball-inner">
@@ -145,11 +139,16 @@
                   </span>
                 </button>
               </div>
-              <div class="eight-ball-questions eight-ball-questions--right">
-                <button type="button" class="eight-ball-question">Should I say yes?</button>
-                <button type="button" class="eight-ball-question">Is today my lucky day?</button>
-                <button type="button" class="eight-ball-question">Will they reply?</button>
-                <button type="button" class="eight-ball-question">Can I trust my gut?</button>
+              <div class="eight-ball-question-row">
+                <button type="button" class="eight-ball-question" id="eight-ball-question">Will I have a good day?</button>
+                <button type="button" class="eight-ball-refresh" id="eight-ball-refresh" aria-label="New question">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                    <path d="M3 3v5h5"/>
+                    <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+                    <path d="M21 21v-5h-5"/>
+                  </svg>
+                </button>
               </div>
             </div>
           </div>

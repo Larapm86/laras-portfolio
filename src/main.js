@@ -119,33 +119,34 @@ if (sunWrap) {
   })
 }
 
-// Magic 8 Ball: shake on click (ball or preset question), then show random answer
+// Magic 8 Ball: one tappable question below the ball + refresh for new question
 const eightBall = document.getElementById('eight-ball')
 const eightBallAnswer = document.getElementById('eight-ball-answer')
-const eightBallWrap = document.querySelector('.eight-ball-wrap')
-if (eightBall && eightBallAnswer) {
+const eightBallQuestion = document.getElementById('eight-ball-question')
+const eightBallRefresh = document.getElementById('eight-ball-refresh')
+if (eightBall && eightBallAnswer && eightBallQuestion) {
   const responses = [
-    'It is certain.',
-    'It is decidedly so.',
-    'Without a doubt.',
-    'Yes – definitely.',
-    'You may rely on it.',
-    'As I see it, yes.',
-    'Most likely.',
-    'Outlook good.',
-    'Yes.',
-    'Signs point to yes.',
-    'Reply hazy, try again.',
-    'Ask again later.',
-    'Better not tell you now.',
-    'Cannot predict now.',
-    'Concentrate and ask again.',
-    "Don't count on it.",
-    'My reply is no.',
-    'My sources say no.',
-    'Outlook not so good.',
-    'Very doubtful.'
+    'It is certain.', 'It is decidedly so.', 'Without a doubt.', 'Yes – definitely.',
+    'You may rely on it.', 'As I see it, yes.', 'Most likely.', 'Outlook good.',
+    'Yes.', 'Signs point to yes.', 'Reply hazy, try again.', 'Ask again later.',
+    'Better not tell you now.', 'Cannot predict now.', 'Concentrate and ask again.',
+    "Don't count on it.", 'My reply is no.', 'My sources say no.', 'Outlook not so good.', 'Very doubtful.'
   ]
+  const questions = [
+    'Will I have a good day?', 'Should I take the job?', 'Is now the right time?', 'Will it work out?',
+    'Should I say yes?', 'Is today my lucky day?', 'Will they reply?', 'Can I trust my gut?',
+    'Should I go for it?', 'Will things get better?', 'Is this the one?', 'Am I on the right path?'
+  ]
+  function pickRandomQuestion() {
+    return questions[Math.floor(Math.random() * questions.length)]
+  }
+  function setNewQuestion() {
+    eightBallQuestion.textContent = pickRandomQuestion()
+  }
+  setNewQuestion()
+  if (eightBallRefresh) {
+    eightBallRefresh.addEventListener('click', () => setNewQuestion())
+  }
   function shakeBall(message) {
     if (eightBall.classList.contains('eight-ball--shaking')) return
     eightBall.classList.add('eight-ball--shaking')
@@ -165,38 +166,9 @@ if (eightBall && eightBallAnswer) {
     }, 650)
   }
   eightBall.addEventListener('click', () => shakeBall('Tap a question'))
-
-  function animateQuestionIntoBall(questionEl, thenShake) {
-    questionEl.classList.add('eight-ball-question--pressed')
-    setTimeout(() => questionEl.classList.remove('eight-ball-question--pressed'), 150)
-
-    const ballRect = eightBall.getBoundingClientRect()
-    const toX = ballRect.left + ballRect.width / 2
-    const toY = ballRect.top + ballRect.height / 2
-    const questionRect = questionEl.getBoundingClientRect()
-    const fromX = questionRect.left + questionRect.width / 2
-    const fromY = questionRect.top + questionRect.height / 2
-
-    const fly = document.createElement('span')
-    fly.className = 'eight-ball-question-fly'
-    fly.textContent = questionEl.textContent
-    fly.style.setProperty('--fly-from-x', `${fromX}px`)
-    fly.style.setProperty('--fly-from-y', `${fromY}px`)
-    fly.style.setProperty('--fly-to-x', `${toX}px`)
-    fly.style.setProperty('--fly-to-y', `${toY}px`)
-    document.body.appendChild(fly)
-
-    fly.addEventListener('animationend', () => fly.remove(), { once: true })
-    setTimeout(() => { if (thenShake) shakeBall() }, 1140)
-  }
-
-  if (eightBallWrap) {
-    eightBallWrap.addEventListener('click', (e) => {
-      const questionBtn = e.target.closest('.eight-ball-question')
-      if (questionBtn) {
-        e.preventDefault()
-        animateQuestionIntoBall(questionBtn, true)
-      }
-    })
-  }
+  eightBallQuestion.addEventListener('click', () => {
+    eightBallQuestion.classList.add('eight-ball-question--pressed')
+    setTimeout(() => eightBallQuestion.classList.remove('eight-ball-question--pressed'), 150)
+    shakeBall()
+  })
 }
