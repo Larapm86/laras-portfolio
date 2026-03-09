@@ -160,6 +160,62 @@
           <p class="about-text">
             I merge brand and product design into clear, user-centred digital experiences. With a focus on typography, systems, and storytelling, I work with agencies and product teams to shape identity and interface.
           </p>
+          <div class="about-graph-wrap" id="about-graph-wrap">
+            <canvas id="graph-canvas" aria-label="Interactive graph of skills and experience"></canvas>
+            <div id="graph-center-label" class="graph-center-label-hidden" aria-hidden="true">
+              <span class="name">Lara Perez</span>
+              <span class="byline">Designer</span>
+            </div>
+            <button type="button" class="graph-focus-close" id="graph-focus-close" hidden aria-label="Close focus view">
+              <span class="graph-focus-close-x">×</span>
+              <span class="graph-focus-close-label">back</span>
+            </button>
+            <div id="graph-legend" class="graph-legend-embed">
+              <div class="graph-legend-item" data-cat="about">
+                <div class="graph-legend-row">
+                  <span class="graph-legend-label">About</span>
+                  <span class="graph-legend-toggle" aria-label="Expand">+</span>
+                </div>
+                <div class="graph-legend-content"><p>Information & contact.</p></div>
+              </div>
+              <div class="graph-legend-item" data-cat="area">
+                <div class="graph-legend-row">
+                  <span class="graph-legend-label">Areas</span>
+                  <span class="graph-legend-toggle" aria-label="Expand">+</span>
+                </div>
+                <div class="graph-legend-content"><p>Behavioral, growth, systems.</p></div>
+              </div>
+              <div class="graph-legend-item" data-cat="discipline">
+                <div class="graph-legend-row">
+                  <span class="graph-legend-label">Disciplines</span>
+                  <span class="graph-legend-toggle" aria-label="Expand">+</span>
+                </div>
+                <div class="graph-legend-content"><p>UX, strategy, design ops.</p></div>
+              </div>
+              <div class="graph-legend-item" data-cat="work">
+                <div class="graph-legend-row">
+                  <span class="graph-legend-label">Work</span>
+                  <span class="graph-legend-toggle" aria-label="Expand">+</span>
+                </div>
+                <div class="graph-legend-content"><p>Projects and case studies.</p></div>
+              </div>
+            </div>
+            <div id="graph-panel">
+              <button type="button" id="graph-panel-close" aria-label="Close panel">×</button>
+              <div id="graph-panel-eyebrow"></div>
+              <h3 id="graph-panel-title"></h3>
+              <div id="graph-panel-body"></div>
+              <div id="graph-panel-tags"></div>
+            </div>
+            <div class="graph-hint-wrap">
+              <span id="graph-hint">Drag to pan · tap nodes for details</span>
+            </div>
+            <div class="graph-controls">
+              <button type="button" class="graph-zoom-btn" id="graph-zoom-out" aria-label="Zoom out">−</button>
+              <button type="button" class="graph-zoom-btn" id="graph-zoom-in" aria-label="Zoom in">+</button>
+              <button type="button" class="graph-recenter-btn" id="graph-recenter-btn">Reset view</button>
+            </div>
+          </div>
         </section>
 
         <section class="connect" id="connect">

@@ -1,4 +1,6 @@
 import './style.css'
+import './graph.css'
+import { initGraph } from './graph.js'
 
 // Load animation: reveal content when DOM is ready
 function initLoadAnimation() {
@@ -9,6 +11,13 @@ function initLoadAnimation() {
   }
 }
 initLoadAnimation()
+
+// About section: interactive graph (pan, zoom, tap nodes)
+if (document.readyState !== 'loading') {
+  initGraph()
+} else {
+  document.addEventListener('DOMContentLoaded', () => initGraph())
+}
 
 // Copyright year in top bar
 const yearEl = document.querySelector('[data-year]')
