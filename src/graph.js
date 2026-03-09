@@ -252,9 +252,14 @@ function draw() {
     if (highlightIds && !legendHighlight) ctx.globalAlpha = 1
   })
 
+  const mobile = W < MOBILE_BREAKPOINT
+  const labelSize = mobile ? 10 : 12
+  const labelSizeHover = mobile ? 11 : 13
+  const subSize = mobile ? 9 : 11
+  const yearSize = mobile ? 8 : 10
+  const lineHeight = mobile ? 14 : 16
   ctx.save()
-  ctx.font = "12px Inter, system-ui, sans-serif"
-  const lineHeight = 16
+  ctx.font = `${labelSize}px Inter, system-ui, sans-serif`
   nodes.forEach(n => {
     if (n.id === 'lara') return
     const pos = worldPos(n)
@@ -262,20 +267,20 @@ function draw() {
     const legendHighlight = highlightIds ? highlightIds.has(n.id) : true
     if (highlightIds && !legendHighlight) ctx.globalAlpha = 0.3
     const lines = n.label.split('\n')
-    const offsetY = n.r * (hovered ? 1.3 : 1.1) + 6
+    const offsetY = n.r * (hovered ? 1.3 : 1.1) + (mobile ? 4 : 6)
     ctx.textAlign = 'center'
     ctx.fillStyle = PORTFOLIO_COLORS.ink
-    ctx.font = `${hovered || legendHighlight ? '500' : '400'} ${hovered ? 13 : 12}px Inter, system-ui, sans-serif`
+    ctx.font = `${hovered || legendHighlight ? '500' : '400'} ${hovered ? labelSizeHover : labelSize}px Inter, system-ui, sans-serif`
     lines.forEach((line, i) => {
       ctx.fillText(line, pos.x, pos.y + offsetY + i * lineHeight)
     })
     if (n.sub) {
-      ctx.font = '400 11px Inter, system-ui, sans-serif'
+      ctx.font = `400 ${subSize}px Inter, system-ui, sans-serif`
       ctx.fillStyle = PORTFOLIO_COLORS.inkSoft
       ctx.fillText(n.sub.split('\n')[0], pos.x, pos.y + offsetY + lines.length * lineHeight + 2)
     }
     if (n.year) {
-      ctx.font = '400 10px Inter, system-ui, sans-serif'
+      ctx.font = `400 ${yearSize}px Inter, system-ui, sans-serif`
       ctx.fillStyle = PORTFOLIO_COLORS.inkFaint
       ctx.fillText(n.year, pos.x, pos.y - n.r * 1.4)
     }
@@ -326,6 +331,9 @@ function resize() {
   if (!container || !canvas || !ctx) return
   W = container.offsetWidth
   H = container.offsetHeight
+  if (isMobile() && vp.scale === 1 && vp.x === 0 && vp.y === 0) {
+    vp.scale = MOBILE_DEFAULT_SCALE
+  }
   const dpr = Math.min(2, window.devicePixelRatio || 1)
   canvas.width = W * dpr
   canvas.height = H * dpr
@@ -340,7 +348,7 @@ function resize() {
 function resetView() {
   vp.x = 0
   vp.y = 0
-  vp.scale = 1
+  vp.scale = isMobile() ? MOBILE_DEFAULT_SCALE : 1
   draw()
   updateCenterLabel()
 }
@@ -348,6 +356,17 @@ function resetView() {
 const ZOOM_FACTOR = 1.15
 const MIN_SCALE = 0.4
 const MAX_SCALE = 2.5
+const MOBILE_BREAKPOINT = 640
+const MOBILE_DEFAULT_SCALE = 1.4
+const MIN_SCALE_MOBILE = 1.15
+
+function isMobile() {
+  return container && container.offsetWidth < MOBILE_BREAKPOINT
+}
+
+function getMinScale() {
+  return isMobile() ? MIN_SCALE_MOBILE : MIN_SCALE
+}
 
 function zoomAtCenter(factor) {
   const cx = W / 2
@@ -355,7 +374,7 @@ function zoomAtCenter(factor) {
   vp.x = cx - (cx - vp.x) * factor
   vp.y = cy - (cy - vp.y) * factor
   vp.scale *= factor
-  vp.scale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, vp.scale))
+  vp.scale = Math.max(getMinScale(), Math.min(MAX_SCALE, vp.scale))
   draw()
   updateCenterLabel()
 }
